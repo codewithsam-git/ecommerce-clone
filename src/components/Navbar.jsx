@@ -20,7 +20,6 @@ export default function Navbar({ user, setUser }) {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
       await signOut(auth);
-      localStorage.removeItem("user");
       setUser(null);
       navigate('/');
     }
@@ -133,7 +132,7 @@ export default function Navbar({ user, setUser }) {
         <div className="shopiRight">
           {user ? (
             <>
-              <span className="userName">Hello, {user.email}!</span>
+              <span className="userName">Hello, {user.displayName || user.email}!</span>
               <NavLink to="/orders" className={({ isActive }) => (isActive ? 'shopiNavlink active' : 'shopiNavlink')}>
                 My Orders
               </NavLink>

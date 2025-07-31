@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
 
 function ProductCard({ product }) {
     const navigate = useNavigate();
@@ -7,14 +8,23 @@ function ProductCard({ product }) {
     const [showDetails, setShowDetails] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [newReview, setNewReview] = useState("");
-    const user = JSON.parse(localStorage.getItem("user"));
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+            setUser(currentUser);
+            setLoading(false);
+        });
+        return () => unsubscribe();
+    }, []);
 
     useEffect(() => {
         const storedReviews = JSON.parse(localStorage.getItem('reviews')) || {};
         setReviews(storedReviews[product.id] || []);
     }, [product.id]);
 
-    const handleAddToCart = (product) => {
+     const handleAddToCart = (product) => {
         if (!user) {
             alert("Please login");
             navigate('/login');
@@ -32,8 +42,11 @@ function ProductCard({ product }) {
     };
 
     const handleAddReview = () => {
+        if (loading) {
+            return; 
+        }
         if (!user) {
-            alert("You must be logged in to submit a review.");
+            alert("Login Please.");
             return;
         }
         if (newReview.trim() === "") return alert("Please enter a review.");
@@ -44,6 +57,10 @@ function ProductCard({ product }) {
         localStorage.setItem('reviews', JSON.stringify(allReviews));
         setNewReview("");
     };
+
+    if (loading) {
+        return null;
+    }
 
     return (
         <>
@@ -83,7 +100,7 @@ function ProductCard({ product }) {
                                 <hr />
                                 <h6>Add a Review:</h6>
                                 <div className="input-group mb-3">
-                                    <input type="text" className="form-control" value={newReview} onChange={(e) => setNewReview(e.target.value)} placeholder="Write your review..." />
+                                    <input type="text" className="form-control" value={newReview} onChange={(e) => setNewReview(e.target.value)} placeholder="Write your review" />
                                     <button className="btn btn-primary" onClick={handleAddReview}>Submit</button>
                                 </div>
 
