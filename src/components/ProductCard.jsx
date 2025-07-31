@@ -1,0 +1,112 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+function ProductCard({ product }) {
+    const navigate = useNavigate();
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+    const [showDetails, setShowDetails] = useState(false);
+    const [reviews, setReviews] = useState([]);
+    const [newReview, setNewReview] = useState("");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    useEffect(() => {
+        const storedReviews = JSON.parse(localStorage.getItem('reviews')) || {};
+        setReviews(storedReviews[product.id] || []);
+    }, [product.id]);
+
+    const handleAddToCart = (product) => {
+        if (!user) {
+            alert("Please login");
+            navigate('/login');
+            return;
+        }
+
+        const existing = cart.findIndex(item => item.id === product.id);
+        const updatedCart = existing > -1
+            ? cart.map((item, i) => i === existing ? { ...item, quantity: item.quantity + 1 } : item)
+            : [...cart, { ...product, quantity: 1 }];
+
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        setCart(updatedCart);
+        alert(`${product.title} has been added to your cart.`);
+    };
+
+    const handleAddReview = () => {
+        if (!user) {
+            alert("You must be logged in to submit a review.");
+            return;
+        }
+        if (newReview.trim() === "") return alert("Please enter a review.");
+        const updatedReviews = [...reviews, newReview];
+        setReviews(updatedReviews);
+        const allReviews = JSON.parse(localStorage.getItem('reviews')) || {};
+        allReviews[product.id] = updatedReviews;
+        localStorage.setItem('reviews', JSON.stringify(allReviews));
+        setNewReview("");
+    };
+
+    return (
+        <>
+            <div className="col-6 col-md-3 mb-4">
+                <div className="card h-100 shadow-sm">
+                    <div onClick={() => setShowDetails(true)} style={{ cursor: "pointer" }}>
+                        <img src={product.images[0]} className="card-img-top" alt={product.title} style={{ height: "200px", objectFit: "cover" }} />
+                    </div>
+                    <div className="card-body d-flex flex-column">
+                        <span className="badge bg-secondary mb-2">{product.category?.name}</span>
+                        <h6 className="card-title" onClick={() => setShowDetails(true)} style={{ cursor: "pointer" }}>{product.title}</h6>
+                        <div className="d-flex justify-content-between align-items-center mt-auto">
+                            <h5 className="text-success mb-0">Rs. {product.price}/-</h5>
+                            <button onClick={() => handleAddToCart(product)} className="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                style={{ width: "32px", height: "32px", backgroundColor: "black", color: "white", border: "2px solid black" }}>
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {showDetails && (
+                <div className="modal fade show" style={{ display: 'block' }}>
+                    <div className="modal-dialog modal-lg">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">{product.title}</h5>
+                                <button type="button" className="btn-close" onClick={() => setShowDetails(false)}></button>
+                            </div>
+                            <div className="modal-body">
+                                <img src={product.images[0]} className="img-fluid mb-3 w-50" alt={product.title} />
+                                <p><strong>Category:</strong> {product.category?.name}</p>
+                                <h4 className="text-success">Rs. {product.price}</h4>
+                                <p>{product.description}</p>
+
+                                <hr />
+                                <h6>Add a Review:</h6>
+                                <div className="input-group mb-3">
+                                    <input type="text" className="form-control" value={newReview} onChange={(e) => setNewReview(e.target.value)} placeholder="Write your review..." />
+                                    <button className="btn btn-primary" onClick={handleAddReview}>Submit</button>
+                                </div>
+
+                                <h6>Customer Reviews:</h6>
+                                {reviews.length > 0 ? (
+                                    <ul className="list-group">
+                                        {reviews.map((r, i) => (
+                                            <li key={i} className="list-group-item">{r}</li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p className="text-muted">No reviews</p>
+                                )}
+                            </div>
+                            <div className="modal-footer">
+                                <button className="btn btn-secondary" onClick={() => setShowDetails(false)}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
+}
+
+export default ProductCard;
