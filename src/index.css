@@ -2,6 +2,8 @@
   background-color: white;
   border-bottom: 1px solid #e5e5e5;
   padding: 12px 16px;
+  position: relative;
+  width: 100%;
 }
 
 .shopiContainer {
@@ -10,6 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .shopiLeft {
@@ -36,10 +39,19 @@
   gap: 24px;
 }
 
+.shopiNavMobile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+}
+
 .shopiNavlink {
   color: #6b7280;
   text-decoration: none;
   transition: color 0.2s;
+  font-size: 16px;
 }
 
 .shopiNavlink:hover {
@@ -59,20 +71,17 @@
   gap: 24px;
 }
 
-.shopiUseremail {
-  font-size: 14px;
-  color: #6b7280;
+.shopiRightMobile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
 }
 
-.shopiUserlink {
+.userName {
   font-size: 14px;
   color: #6b7280;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.shopiUserlink:hover {
-  color: black;
 }
 
 .shopiCart {
@@ -88,14 +97,104 @@
   color: black;
 }
 
-.shopiCart-count {
+.shopiHamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #374151;
+  z-index: 1001;
+}
+
+.shopiMobileMenu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-bottom: 1px solid #e5e5e5;
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
+  width: 100%;
+}
+
+.shopiMobileMenu.open {
+  display: flex;
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.btn.btn-sm.btn-danger {
+  padding: 4px 12px;
   font-size: 14px;
-  font-weight: 500;
 }
 
 @media (max-width: 768px) {
-  .shopiNav, .shopiUseremail, .shopiUserlink {
+  .shopiContainer {
+    flex-wrap: nowrap;
+  }
+
+  .shopiNav {
     display: none;
+  }
+
+  .shopiRight {
+    display: none;
+  }
+
+  .shopiHamburger {
+    display: block;
+  }
+
+  .shopiMobileMenu {
+    display: none;
+  }
+
+  .shopiMobileMenu.open {
+    display: flex;
+  }
+
+  .shopiNavMobile .shopiNavlink {
+    font-size: 18px;
+    padding: 8px 0;
+  }
+
+  .shopiRightMobile .shopiNavlink,
+  .shopiRightMobile .shopiCart,
+  .shopiRightMobile .btn {
+    font-size: 18px;
+    padding: 8px 0;
+  }
+
+  .shopiRightMobile .btn {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .shopiBrand {
+    font-size: 18px;
+  }
+
+  .shopiNavMobile .shopiNavlink,
+  .shopiRightMobile .shopiNavlink,
+  .shopiRightMobile .shopiCart,
+  .shopiRightMobile .btn {
+    font-size: 16px;
+  }
+
+  .shopiHamburger {
+    padding: 4px;
+  }
+
+  .shopiContainer {
+    padding: 0 8px;
   }
 }
 
