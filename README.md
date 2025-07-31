@@ -17,10 +17,10 @@ This is a simple **E-commerce web application** built with **React** that allows
 
 ## 🛠️ Technologies Used
 
-* **React JS** (Frontend Framework)
-* **Firebase Authentication** (User login & registration)
-* **Bootstrap 5** (Styling)
-* **LocalStorage** (Cart & Reviews Persistence)
+* **React JS**
+* **Firebase Authentication**
+* **Bootstrap 5**
+* **LocalStorage**
 
 ---
 
