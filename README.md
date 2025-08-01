@@ -1,4 +1,4 @@
-
+````markdown
 # 🛍️ Ecommerce Clone
 
 This is a simple **E-commerce web application** built with **React** that allows users to browse products, add them to the cart (only if logged in), and write product reviews. The app uses **Firebase Authentication** for login/registration and **LocalStorage** to persist cart and reviews.
@@ -29,13 +29,12 @@ This is a simple **E-commerce web application** built with **React** that allows
 * Register or Login with your credentials.
 * Browse products, click to see details.
 * Logged-in users can:
-
   * Add products to the cart.
   * Write reviews (saved in LocalStorage).
 * Cart and Reviews persist even after page refresh.
 
 ---
-````markdown
+
 ## 🏃‍♂️ How to Run Locally
 
 ### 1. 📥 Clone the Repository
@@ -59,4 +58,9 @@ You can configure Firebase or use any other backend service as per your requirem
 
 ```bash
 npm run dev
+```
+
+The app will run at `http://localhost:3000`.
+
+```
 ```
