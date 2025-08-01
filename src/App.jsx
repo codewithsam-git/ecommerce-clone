@@ -22,9 +22,9 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  if (loading) {
-    return <div className="container my-4 text-center">Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div className="container my-4 text-center">Loading...</div>;
+  // }
 
   return (
     <BrowserRouter>

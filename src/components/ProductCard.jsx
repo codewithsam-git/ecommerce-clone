@@ -4,12 +4,17 @@ import { auth } from '../firebase';
 
 function ProductCard({ product }) {
     const navigate = useNavigate();
-    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+    const [cart, setCart] = useState([]);
     const [showDetails, setShowDetails] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [newReview, setNewReview] = useState("");
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setCart(storedCart);
+    }, []);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -24,26 +29,33 @@ function ProductCard({ product }) {
         setReviews(storedReviews[product.id] || []);
     }, [product.id]);
 
-     const handleAddToCart = (product) => {
+    const handleAddToCart = (product) => {
         if (!user) {
             alert("Please login");
             navigate('/login');
             return;
         }
 
-        const existing = cart.findIndex(item => item.id === product.id);
-        const updatedCart = existing > -1
-            ? cart.map((item, i) => i === existing ? { ...item, quantity: item.quantity + 1 } : item)
-            : [...cart, { ...product, quantity: 1 }];
+        setCart(prevCart => {
+            const existing = prevCart.findIndex(item => item.id === product.id);
+            const newCart = existing > -1
+                ? prevCart.map((item, i) =>
+                    i === existing ? { ...item, quantity: item.quantity + 1 } : item
+                )
+                : [...prevCart, { ...product, quantity: 1 }];
 
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
-        setCart(updatedCart);
+            //localstotage
+            localStorage.setItem("cart", JSON.stringify(newCart));
+            // console.log(localStorage.getItem('cart'));
+            return newCart;
+        });
+
         alert(`${product.title} has been added to your cart.`);
     };
 
     const handleAddReview = () => {
         if (loading) {
-            return; 
+            return;
         }
         if (!user) {
             alert("Login Please.");
@@ -106,9 +118,9 @@ function ProductCard({ product }) {
 
                                 <h6>Customer Reviews:</h6>
                                 {reviews.length > 0 ? (
-                                    <ul className="list-group">
+                                    <ul className="">
                                         {reviews.map((r, i) => (
-                                            <li key={i} className="list-group-item">{r}</li>
+                                            <li key={i} className="">{r}</li>
                                         ))}
                                     </ul>
                                 ) : (
