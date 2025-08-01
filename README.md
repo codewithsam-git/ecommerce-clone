@@ -33,3 +33,24 @@ This is a simple **E-commerce web application** built with **React** that allows
   * Add products to the cart.
   * Write reviews (saved in LocalStorage).
 * Cart and Reviews persist even after page refresh.
+
+## 🏃‍♂️ How to Run Locally
+
+### 1. 📥 Clone the Repository
+```bash
+git clone https://github.com/your-username/ecommerce-clone.git
+cd ecommerce-clone
+
+### 1. 📦 Install Dependencies
+```bash
+npm install
+
+### 3. 🔑 Configure Storage
+```bash
+In my case I'm using firebase.
+You can use as per your requirements.
+
+### 4. ▶️ Start the Development Server
+```base
+npm run dev
+
