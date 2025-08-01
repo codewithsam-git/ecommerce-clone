@@ -38,7 +38,7 @@ This is a simple **E-commerce web application** built with **React** that allows
 
 ### 1. 📥 Clone the Repository
 ```bash
-git clone https://github.com/your-username/ecommerce-clone.git
+git clone https://github.com/codewithsam-git/ecommerce-clone
 cd ecommerce-clone
 ```
 
